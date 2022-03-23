@@ -1,15 +1,27 @@
 from typing import List, Optional
+from unittest import result
 
 
 from .. import models, schemas, oauth2
 from fastapi import Response, status, HTTPException, Depends, APIRouter
 from sqlalchemy.orm import Session
+from sqlalchemy import func
 from ..database import get_db
+
 
 router = APIRouter(
     prefix="/posts",
     tags=['Posts']
 )
+
+
+@router.get("/votes_by_post", response_model=List[schemas.PostWithVote])
+def get_posts_with_vote(db: Session = Depends(get_db), current_user=Depends(oauth2.get_current_user), limit: int = 10, skip: int = 0, search: Optional[str] = ""):
+
+    results = db.query(models.Post, func.count(models.Vote.post_id).label("votes")).join(
+        models.Vote, models.Vote.post_id == models.Post.id, isouter=True).group_by(models.Post.id).all()
+
+    return results
 
 
 @router.get("/", response_model=List[schemas.Post])

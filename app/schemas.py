@@ -43,6 +43,14 @@ class Post(PostBase):
         orm_mode = True
 
 
+class PostWithVote(BaseModel):
+    Post: Post
+    votes: int
+
+    class Config:
+        orm_mode = True
+
+
 class Token(BaseModel):
     access_token: str
     token_type: str
@@ -51,6 +59,7 @@ class Token(BaseModel):
 class TokenData(BaseModel):
     id: Optional[str] = None
 
+
 class Vote(BaseModel):
-    post_id:int
-    dir:conint(le=1) # less than 1
+    post_id: int
+    dir: conint(le=1)  # less than 1
