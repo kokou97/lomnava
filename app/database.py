@@ -10,7 +10,7 @@ from .config import settings
 
 # SQLALCHEMY_DATABASE_URL = 'postgresql://postgres:1%40Jean-Marie@localhost/fastapi2'
 
-SQLALCHEMY_DATABASE_URL = f'postgresql://{settings.database_username}:{settings.database_password}@{settings.database_hostname}/{settings.database_name}'
+SQLALCHEMY_DATABASE_URL = f'postgresql+psycopg2://{settings.database_username}:{settings.database_password}@{settings.database_hostname}:{settings.database_port}/{settings.database_name}'
 # "%40" is "@"
 engine = create_engine(SQLALCHEMY_DATABASE_URL)
 
